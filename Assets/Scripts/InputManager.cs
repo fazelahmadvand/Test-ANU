@@ -10,17 +10,21 @@ public class InputManager : Singleton<InputManager>
 
 
     private Vector3 currentTouchPos;
-    [SerializeField] private bool isDragDown;
     public event Action OnDragDown;
 
     public event Action OnDragLeft;
-    [SerializeField] private bool isDragLeft;
 
     public event Action OnDragRight;
-    [SerializeField] private bool isDragRight;
+
+    [SerializeField] private int dragIndex;
 
 
-
+    private void OnDisable()
+    {
+        OnDragDown = null;
+        OnDragLeft = null;
+        OnDragRight = null;
+    }
     private void Update()
     {
 
@@ -38,13 +42,16 @@ public class InputManager : Singleton<InputManager>
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            if (Manager.Instacne.state == GameState.WaitingInput)
+            {
 
-            if (isDragLeft) OnDragLeft?.Invoke();
-            if (isDragRight) OnDragRight?.Invoke();
+                if (dragIndex == 1) OnDragDown?.Invoke();
+                if (dragIndex == 2) OnDragLeft?.Invoke();
+                if (dragIndex == 3) OnDragRight?.Invoke();
 
-            isDragDown = false;
-            isDragRight = false;
-            isDragLeft = false;
+            }
+
+            dragIndex = 0;
         }
 
 
@@ -56,8 +63,7 @@ public class InputManager : Singleton<InputManager>
 
         if (MathF.Abs(diff) > dragIntensity)
         {
-            if (!isDragDown) OnDragDown?.Invoke();
-            isDragDown = true;
+            dragIndex = 1;
         }
 
     }
@@ -70,13 +76,13 @@ public class InputManager : Singleton<InputManager>
 
         if (diff.x > dragIntensity)
         {
-            isDragLeft = true;
+            dragIndex = 2;
         }
 
 
         if (diff.x < dragIntensity)
         {
-            isDragRight = true;
+            dragIndex = 3;
         }
 
     }

@@ -10,7 +10,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
         get
         {
-            ins ??= FindObjectOfType<T>();
+            if (ins == null)
+                ins = FindObjectOfType<T>();
             return ins;
         }
     }
