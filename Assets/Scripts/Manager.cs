@@ -7,6 +7,7 @@ using DG.Tweening;
 using UnityEngine.Analytics;
 using Random = UnityEngine.Random;
 using GameAnalyticsSDK;
+using UnityEngine.SceneManagement;
 
 public class Manager : Singleton<Manager>
 {
@@ -97,7 +98,7 @@ public class Manager : Singleton<Manager>
             case GameState.GenerateLevel:
                 GenerateGrid();
                 Analytics.CustomEvent("StartGame");
-                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "StartGame");
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "StartGame", SceneManager.GetActiveScene().buildIndex);
                 break;
 
             case GameState.SpawningBlocks:
@@ -113,14 +114,14 @@ public class Manager : Singleton<Manager>
             case GameState.Win:
                 HUDManager.Instacne.ShowGameResult(GameState.Win);
                 Analytics.CustomEvent("WinGame");
-                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "WinGame");
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "WinGame", SceneManager.GetActiveScene().buildIndex);
 
 
                 break;
 
             case GameState.Lose:
                 HUDManager.Instacne.ShowGameResult(GameState.Lose);
-                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, "LoseGame");
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, "LoseGame", SceneManager.GetActiveScene().buildIndex);
                 Analytics.CustomEvent("LoseGame");
                 break;
 

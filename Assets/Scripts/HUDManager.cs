@@ -15,6 +15,9 @@ public class HUDManager : Singleton<HUDManager>
     [SerializeField] private TMP_Text titleTxt;
     [SerializeField] private TMP_Text restartTxt;
     [SerializeField] private Button btn;
+    [SerializeField] private Button nextSceneBtn;
+
+
     [SerializeField] private Image img;
     [SerializeField] private float fadeDuration = .5f;
     private void Start()
@@ -36,10 +39,13 @@ public class HUDManager : Singleton<HUDManager>
         if (state == GameState.Win)
         {
             restartTxt.text = "Restart";
+            nextSceneBtn.gameObject.SetActive(true);
+
         }
         else if (state == GameState.Lose)
         {
             restartTxt.text = "Try Again";
+            nextSceneBtn.gameObject.SetActive(false);
 
         }
         titleTxt.text = state.ToString();
@@ -48,6 +54,24 @@ public class HUDManager : Singleton<HUDManager>
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         });
 
+        nextSceneBtn.onClick.AddListener(() =>
+        {
+            var count = SceneManager.sceneCount;
+
+            var currenScene = SceneManager.GetActiveScene();
+
+            bool isEnd = currenScene.buildIndex > count - 1;
+            if (isEnd)
+            {
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                SceneManager.LoadScene(currenScene.buildIndex + 1);
+
+            }
+
+        });
 
     }
 

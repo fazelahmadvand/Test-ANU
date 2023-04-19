@@ -54,6 +54,11 @@ public class InputManager : Singleton<InputManager>
             dragIndex = 0;
         }
 
+#if UNITY_EDITOR_WIN
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+            OnDragDown?.Invoke();
+#endif
+
 
     }
 

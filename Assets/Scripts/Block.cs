@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Block : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class Block : MonoBehaviour
 
     public void Init(BlockType type)
     {
+        transform.localScale = Vector3.zero;
+        transform.DOScale(Vector3.one, Model.DURATION);
         Value = type.Value;
         _text.text = Value.ToString();
     }
